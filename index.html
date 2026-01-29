@@ -1,26 +1,156 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 
 <head>
     <meta charset="UTF-8">
-    <title>It's my turn!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield | Siber Güvenlik Merkezi</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <!-- Matrix Background -->
+    <canvas id="matrix"></canvas>
 
-    <div class="container">
-        <h1>To-Do List</h1>
-
-        <div class="input-section">
-            <input type="text" id="taskInput" placeholder="Yeni görev ekle...">
-            <button id="addButton">Ekle</button>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="shield-icon">🛡️</span>
+                <span class="logo-text">Cyber<span class="highlight">Shield</span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Ana Sayfa</a></li>
+                <li><a href="#services">Hizmetler</a></li>
+                <li><a href="#threats">Tehditler</a></li>
+                <li><a href="#contact">İletişim</a></li>
+            </ul>
         </div>
+    </nav>
 
-        <ul id="taskList">
-            <!-- Görevler buraya eklenecek -->
-        </ul>
-    </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="glitch" data-text="SİBER GÜVENLİK">SİBER GÜVENLİK</h1>
+            <p class="subtitle typing-effect">Dijital Dünyanızı Koruyoruz</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-target="10000">0</span>
+                    <span class="stat-label">Engellenen Saldırı</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="99.9">0</span><span class="stat-number">%</span>
+                    <span class="stat-label">Koruma Oranı</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-target="247">0</span>
+                    <span class="stat-label">7/24 İzleme</span>
+                </div>
+            </div>
+            <button class="cta-button">Hemen Başla</button>
+        </div>
+        <div class="scanner">
+            <div class="scan-line"></div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2 class="section-title">GÜVENLİK HİZMETLERİMİZ</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">🔒</div>
+                <h3>Penetrasyon Testi</h3>
+                <p>Sistemlerinizin güvenlik açıklarını tespit eder ve raporlarız</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">🛡️</div>
+                <h3>Firewall Yönetimi</h3>
+                <p>Gelişmiş firewall çözümleri ile ağınızı koruyoruz</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">🔐</div>
+                <h3>Şifreleme</h3>
+                <p>Verilerinizi en güçlü şifreleme yöntemleriyle koruyoruz</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">🚨</div>
+                <h3>Olay Müdahalesi</h3>
+                <p>Siber saldırılara anında müdahale ve kurtarma</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">📊</div>
+                <h3>Güvenlik Analizi</h3>
+                <p>Detaylı güvenlik raporları ve risk değerlendirmesi</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">⚡</div>
+                <h3>DDoS Koruması</h3>
+                <p>Dağıtık hizmet reddi saldırılarına karşı koruma</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Threats Section -->
+    <section id="threats" class="threats">
+        <h2 class="section-title">GÜNCEL SİBER TEHDİTLER</h2>
+        <div class="threat-monitor">
+            <div class="threat-item">
+                <span class="threat-level high">●</span>
+                <span class="threat-name">Ransomware Saldırısı</span>
+                <span class="threat-count">2,847 algılandı</span>
+            </div>
+            <div class="threat-item">
+                <span class="threat-level high">●</span>
+                <span class="threat-name">Phishing Girişimi</span>
+                <span class="threat-count">4,523 engellendi</span>
+            </div>
+            <div class="threat-item">
+                <span class="threat-level medium">●</span>
+                <span class="threat-name">SQL Injection</span>
+                <span class="threat-count">1,234 durduruldu</span>
+            </div>
+            <div class="threat-item">
+                <span class="threat-level medium">●</span>
+                <span class="threat-name">Brute Force</span>
+                <span class="threat-count">3,156 önlendi</span>
+            </div>
+            <div class="threat-item">
+                <span class="threat-level low">●</span>
+                <span class="threat-name">Port Tarama</span>
+                <span class="threat-count">892 tespit edildi</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">BİZE ULAŞIN</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <p>📧 info@cybershield.com</p>
+                <p>📱 +90 (555) 123-4567</p>
+                <p>📍 İstanbul, Türkiye</p>
+            </div>
+            <div class="terminal">
+                <div class="terminal-header">
+                    <span class="terminal-title">terminal@cybershield:~$</span>
+                </div>
+                <div class="terminal-body">
+                    <p><span class="prompt">$</span> status --check</p>
+                    <p class="output">✓ Tüm sistemler güvenli</p>
+                    <p class="output">✓ Gerçek zamanlı izleme aktif</p>
+                    <p class="output">✓ Firewall durumu: KORUYOR</p>
+                    <p><span class="prompt">$</span> <span class="cursor">_</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 CyberShield. Tüm hakları saklıdır.</p>
+    </footer>
 
     <script src="app.js"></script>
 </body>
