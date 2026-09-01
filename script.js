@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollReveal();
     initChatbot();
     initContactForm();
+    initCursorParticles();
 });
 
 // ===== NAVBAR =====
@@ -15,8 +16,10 @@ function initNavbar() {
 
     // Scroll effect
     window.addEventListener('scroll', () => {
-        navbar.classList.toggle('scrolled', window.scrollY > 50);
+        if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 50);
     });
+
+    if (!hamburger || !navLinks) return;
 
     // Mobile menu
     hamburger.addEventListener('click', () => {
@@ -42,7 +45,6 @@ function initScrollReveal() {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    // Stagger children if needed
                     const children = entry.target.querySelectorAll('.reveal-child');
                     children.forEach((child, i) => {
                         child.style.transitionDelay = `${i * 0.12}s`;
@@ -94,6 +96,8 @@ function initChatbot() {
     const chatInput = document.getElementById('chatInput');
     const messagesContainer = document.getElementById('chatMessages');
 
+    if (!toggleBtn || !chatWindow || !sendBtn || !chatInput || !messagesContainer) return;
+
     let isOpen = false;
     let hasGreeted = false;
 
@@ -134,11 +138,9 @@ function initChatbot() {
         chatWindow.classList.toggle('open', isOpen);
         toggleBtn.querySelector('.icon-chat').textContent = isOpen ? '✕' : '💬';
 
-        // Remove badge
         const badge = toggleBtn.querySelector('.badge');
         if (badge) badge.remove();
 
-        // Show greeting on first open
         if (isOpen && !hasGreeted) {
             hasGreeted = true;
             setTimeout(() => {
@@ -156,11 +158,13 @@ function initChatbot() {
     });
 
     // Close button
-    closeBtn.addEventListener('click', () => {
-        isOpen = false;
-        chatWindow.classList.remove('open');
-        toggleBtn.querySelector('.icon-chat').textContent = '💬';
-    });
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            isOpen = false;
+            chatWindow.classList.remove('open');
+            toggleBtn.querySelector('.icon-chat').textContent = '💬';
+        });
+    }
 
     // Send message
     sendBtn.addEventListener('click', () => sendMessage());
@@ -178,10 +182,8 @@ function initChatbot() {
         addUserMessage(text);
         chatInput.value = '';
 
-        // Show typing indicator
         showTyping();
 
-        // Simulate response delay
         const delay = 800 + Math.random() * 1200;
         setTimeout(() => {
             removeTyping();
@@ -192,7 +194,6 @@ function initChatbot() {
     function generateResponse(userText) {
         const normalizedText = userText.toLowerCase().trim().replace(/[?!.,]/g, '');
 
-        // Check for exact or partial matches
         let matched = null;
         for (const [key, value] of Object.entries(botResponses)) {
             const normalizedKey = key.toLowerCase().replace(/[?!.,]/g, '');
@@ -202,7 +203,6 @@ function initChatbot() {
             }
         }
 
-        // Keyword matching
         if (!matched) {
             if (normalizedText.includes('hizmet') || normalizedText.includes('servis') || normalizedText.includes('ne yapıyorsunuz')) {
                 matched = botResponses['hizmetleriniz neler?'];
@@ -247,7 +247,6 @@ function initChatbot() {
         const bubble = document.createElement('div');
         bubble.className = 'chat-bubble bot';
 
-        // Parse markdown-like bold text
         const formattedText = text
             .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
             .replace(/\n/g, '<br>');
@@ -255,7 +254,6 @@ function initChatbot() {
         bubble.innerHTML = formattedText;
         messagesContainer.appendChild(bubble);
 
-        // Add quick replies
         if (quickReplies.length > 0) {
             const repliesContainer = document.createElement('div');
             repliesContainer.className = 'quick-replies';
@@ -302,4 +300,66 @@ function initChatbot() {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
         });
     }
+}
+
+// ===== CURSOR PARTICLES EFFECT =====
+function initCursorParticles() {
+    const canvas = document.getElementById('cursor-canvas');
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const colors = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981'];
+
+    window.addEventListener('mousemove', (e) => {
+        for (let i = 0; i < 3; i++) {
+            particles.push({
+                x: e.clientX,
+                y: e.clientY,
+                size: Math.random() * 3 + 1,
+                speedX: (Math.random() - 0.5) * 2,
+                speedY: (Math.random() - 0.5) * 2,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                alpha: 1
+            });
+        }
+    });
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let i = 0; i < particles.length; i++) {
+            const p = particles[i];
+            p.x += p.speedX;
+            p.y += p.speedY;
+            p.alpha -= 0.02;
+
+            if (p.alpha <= 0) {
+                particles.splice(i, 1);
+                i--;
+                continue;
+            }
+
+            ctx.save();
+            ctx.globalAlpha = p.alpha;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
 }
