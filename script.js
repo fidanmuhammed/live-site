@@ -302,13 +302,14 @@ function initChatbot() {
     }
 }
 
-// ===== CURSOR PARTICLES EFFECT =====
+// ===== CURSOR PARTICLES EFFECT (HAFİF & OPTİMİZE) =====
 function initCursorParticles() {
     const canvas = document.getElementById('cursor-canvas');
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     let particles = [];
+    const maxParticles = 35; // Ekranda birikmeyi ve CPU yükünü sınırlar
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -318,18 +319,24 @@ function initCursorParticles() {
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    const colors = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#10b981'];
+    const colors = ['#00f2fe', '#4facfe', '#a855f7', '#ec4899', '#38ef7d'];
+    let lastTime = 0;
 
+    // Fare hareketini sınırlayarak saniyede binlerce nesne oluşmasını engeller
     window.addEventListener('mousemove', (e) => {
-        for (let i = 0; i < 3; i++) {
+        const now = performance.now();
+        if (now - lastTime < 30) return;
+        lastTime = now;
+
+        if (particles.length < maxParticles) {
             particles.push({
                 x: e.clientX,
                 y: e.clientY,
-                size: Math.random() * 3 + 1,
-                speedX: (Math.random() - 0.5) * 2,
-                speedY: (Math.random() - 0.5) * 2,
+                size: Math.random() * 2 + 1.5,
+                speedX: (Math.random() - 0.5) * 1.2,
+                speedY: (Math.random() - 0.5) * 1.2,
                 color: colors[Math.floor(Math.random() * colors.length)],
-                alpha: 1
+                alpha: 0.8
             });
         }
     });
@@ -341,7 +348,7 @@ function initCursorParticles() {
             const p = particles[i];
             p.x += p.speedX;
             p.y += p.speedY;
-            p.alpha -= 0.02;
+            p.alpha -= 0.035; // Hızlı sönme
 
             if (p.alpha <= 0) {
                 particles.splice(i, 1);
@@ -349,13 +356,11 @@ function initCursorParticles() {
                 continue;
             }
 
-            ctx.save();
             ctx.globalAlpha = p.alpha;
             ctx.fillStyle = p.color;
             ctx.beginPath();
             ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
             ctx.fill();
-            ctx.restore();
         }
 
         requestAnimationFrame(animateParticles);
